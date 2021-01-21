@@ -9,7 +9,7 @@ import time
 import datetime
 from docx import Document
 import subprocess
-
+import libreoffice_convert
 
 import pyperclip
 import os
@@ -180,8 +180,12 @@ def Apply():
     select.select_by_index('1')
     if yes_or_no("Good?") == True:
         browser.find_element_by_xpath("//*[@class='btn btn-primary']").click()
+
+# options = webdriver.ChromeOptions()
+# options.add_argument("--start-maximized")
 browser = webdriver.Chrome()
-browser.set_window_size(1920,1080)
+browser.maximize_window()
+# browser.set_window_size(1920,1080)
 url = 'https://cas.sfu.ca/cas/login?message=Welcome+to+SFU+myExperience.%20Please+login+with+your+SFU+computing+ID.&allow=student,alumni&renew=true&service=https://myexperience.sfu.ca/sfuLogin.htm%3Faction%3Dlogin'
 browser.get(url)
 username = browser.find_element_by_id("username")
