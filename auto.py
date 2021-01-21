@@ -9,7 +9,7 @@ import time
 import datetime
 from docx import Document
 import subprocess
-import libreoffice_convert
+
 
 import pyperclip
 import os
