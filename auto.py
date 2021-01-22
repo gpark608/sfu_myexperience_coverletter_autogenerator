@@ -147,8 +147,9 @@ def CLGEN(JOBTITLE, COMPANY, FNAME, LNAME, SAL, ADDRESS1, CITY, PROVINCE, POSTAL
         kill = subprocess.run(["killall", "soffice.bin"])
         kill.returncode
     pyperclip.copy(SAVEAS+'.pdf')
-def Apply():
-    
+    return SAVEAS
+def Apply(filename):
+    filename = filename + '.pdf'
     browser.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.HOME)
     time.sleep(1)
     buttons = browser.find_element_by_xpath("//button[@class='btn__default--text btn--default  applyButton']") #apply button
@@ -161,17 +162,17 @@ def Apply():
     newdoc = browser.find_element_by_xpath("//*[contains(text(), 'Click if you need to upload a new document')]")
     newdoc.click()
     senddoc = browser.find_element_by_xpath("//*[@id='fileUpload_docUpload']")
-    senddoc.send_keys(os.getcwd()+"/"+pyperclip.paste())
+    senddoc.send_keys(os.getcwd()+"/"+filename)
     doctitle = browser.find_element_by_id("docName")
-    doctitle.send_keys(pyperclip.paste())
+    doctitle.send_keys(filename)
     select = Select(browser.find_element_by_id('docType'))
     select.select_by_value('14')
     time.sleep(4)
     browser.find_element_by_xpath("//*[contains(text(), 'Upload Document')]").click()
     # time.sleep(3)
     browser.find_element_by_css_selector("input[type='radio'][value='customPkg']").click()
-    browser.find_element_by_id("packageName").send_keys(pyperclip.paste())
-    browser.find_element_by_xpath("//select[@name='14']/option[contains(text(), '{0}')]".format(pyperclip.paste())).click()
+    browser.find_element_by_id("packageName").send_keys(filename)
+    browser.find_element_by_xpath("//select[@name='14']/option[contains(text(), '{0}')]".format(filename)).click()
     select = Select(browser.find_element_by_id('requiredInPackage18')) #SIS
     select.select_by_index('1')
     select = Select(browser.find_element_by_id('requiredInPackage15')) #Resume
@@ -228,12 +229,12 @@ if yes_or_no("Proceed?") == True:
 
     JOBTITLE, COMPANY, FNAME, LNAME, SAL, ADDRESS1, CITY, PROVINCE, POSTAL = webscraping()
 
-    CLGEN(JOBTITLE, COMPANY, FNAME, LNAME, SAL, ADDRESS1, CITY, PROVINCE, POSTAL)
+    filename = CLGEN(JOBTITLE, COMPANY, FNAME, LNAME, SAL, ADDRESS1, CITY, PROVINCE, POSTAL)
 
 
 
     if yes_or_no("Apply?") == True:
-        Apply()
+        Apply(filename)
         
 
 while yes_or_no("Another One?") == True:
@@ -258,9 +259,9 @@ while yes_or_no("Another One?") == True:
     if yes_or_no("Proceed?") == True:
         JOBTITLE, COMPANY, FNAME, LNAME, SAL, ADDRESS1, CITY, PROVINCE, POSTAL = webscraping()
 
-        CLGEN(JOBTITLE, COMPANY, FNAME, LNAME, SAL, ADDRESS1, CITY, PROVINCE, POSTAL)
+        filename = CLGEN(JOBTITLE, COMPANY, FNAME, LNAME, SAL, ADDRESS1, CITY, PROVINCE, POSTAL)
         if yes_or_no("Apply?") == True:
-            Apply()
+            Apply(filename)
 
 
 
